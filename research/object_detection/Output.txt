@@ -1,1 +1,1 @@
-Number of open spots: 7 Number of occupied spots: 41
+Number of open spots: 6 Number of occupied spots: 42

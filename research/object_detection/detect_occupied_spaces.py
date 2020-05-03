@@ -14,6 +14,10 @@ from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image, ImageDraw
 
+#This is where the whole project is stored on my machine,
+#change when put on new environment 
+BASE_DIRECTORY = r"/Users/diego/Documents/GitHub"
+
 # This is needed since the notebook is stored in the object_detection folder.
 from object_detection.utils import ops as utils_ops
 #sys.path.append("..")
@@ -25,7 +29,7 @@ if StrictVersion(tf.__version__) < StrictVersion('1.9.0'):
 #%matplotlib
 
 from utils import label_map_util
-path= r'C:\Users\alexs\OneDrive\Documents\GitHub\models\research\object_detection'
+path = BASE_DIRECTORY + r'/models/research/object_detection'
 os.chdir(path)
 from utils import visualization_utils as vis_util
 
@@ -39,11 +43,11 @@ print(len(coord))
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 #PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph.pb'
-PATH_TO_FROZEN_GRAPH=r'C:\Users\alexs\OneDrive\Documents\GitHub\models\research\object_detection\inference_graph\frozen_inference_graph.pb'
+PATH_TO_FROZEN_GRAPH = BASE_DIRECTORY + r'/models/research/object_detection/inference_graph/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
 #PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
-PATH_TO_LABELS= r'C:\Users\alexs\OneDrive\Documents\GitHub\models\research\object_detection\training\labelmap.pbtxt'
+PATH_TO_LABELS = BASE_DIRECTORY + r'/models/research/object_detection/training/labelmap.pbtxt'
 
 #Loading in frozen model
 detection_graph = tf.Graph()
@@ -67,7 +71,7 @@ def load_image_into_numpy_array(image):
 # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
 PATH_TO_TEST_IMAGES_DIR = 'test_images'
 TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(1, 2) ]
-image_path= r'C:\Users\alexs\OneDrive\Documents\GitHub\models\research\object_detection\test_images\one.jpg'
+image_path = BASE_DIRECTORY + r'/CS499/server/RawPicture/input.jpg'
 image = Image.open(image_path)
 image2= Image.open(image_path)
 draw = ImageDraw.Draw(image2)
@@ -125,17 +129,17 @@ def run_inference_for_single_image(image, graph):
   return output_dict
 
 for row in range(1,len(coord)):
-  
-  
+
+
   image1= image.crop((coord[0][row],coord[1][row],coord[2][row],coord[3][row]))
-  
+
   #image1.show()
   # image= image[coord[1][1]:coord[1][3],coord[1][0]:coord[1][2]]
 
   # the array based representation of the image will be used later in order to prepare the
   # result image with boxes and labels on it.
   image_np = load_image_into_numpy_array(image1)
-  
+
   # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
   image_np_expanded = np.expand_dims(image_np, axis=0)
   # Actual detection.
@@ -162,15 +166,15 @@ for row in range(1,len(coord)):
   else:
     draw.rectangle((coord[0][row],coord[1][row],coord[2][row],coord[3][row]), outline=(0, 255, 0))
     empty+=1
-  
+
   #cv2.imshow('object detector',image_np)
   #cv2.waitKey(0)
   #cv2.destroyAllWindows()
-print("Number of open spots:",empty,"Number of occupied spots: ", occupied)
+#print("Number of open spots:",empty,"Number of occupied spots: ", occupied)
 
-with open("Output.txt", "w") as text_file:
+with open(BASE_DIRECTORY + r"/CS499/server/EditedPicture/output.txt", "w") as text_file:
     text_file.write("Number of open spots: %i Number of occupied spots: %i" % (empty, occupied))
 
-image2.show()
-image2.save("output.jpg") 
+image2.save(BASE_DIRECTORY + r"/CS499/server/EditedPicture/output.jpg")
 
+print(True)
